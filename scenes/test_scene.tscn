@@ -1,0 +1,86 @@
+[gd_scene load_steps=12 format=3 uid="uid://cn6l7mwc3qpis"]
+
+[ext_resource type="Texture2D" uid="uid://l1pnd8fmhuwo" path="res://assets/backgrounds/background_proto1.png" id="1_lfy31"]
+[ext_resource type="Texture2D" uid="uid://b4a81yaywqptm" path="res://assets/sprites/ant_proto_1-Sheet.png" id="2_cs573"]
+
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_0e2mf"]
+distance = -48.0
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_uirry"]
+atlas = ExtResource("2_cs573")
+region = Rect2(0, 0, 256, 256)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0cc7f"]
+atlas = ExtResource("2_cs573")
+region = Rect2(256, 0, 256, 256)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yi3he"]
+atlas = ExtResource("2_cs573")
+region = Rect2(512, 0, 256, 256)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_koslw"]
+atlas = ExtResource("2_cs573")
+region = Rect2(0, 256, 256, 256)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yp3vd"]
+atlas = ExtResource("2_cs573")
+region = Rect2(256, 256, 256, 256)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hit4q"]
+atlas = ExtResource("2_cs573")
+region = Rect2(512, 256, 256, 256)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_dkylx"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_uirry")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0cc7f")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_yi3he")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_koslw")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_yp3vd")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hit4q")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_08pp3"]
+radius = 70.0
+height = 206.0
+
+[node name="Node2D" type="Node2D"]
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
+position = Vector2(1, 69)
+shape = SubResource("WorldBoundaryShape2D_0e2mf")
+
+[node name="BackgroundProto1" type="Sprite2D" parent="."]
+position = Vector2(-5, -35)
+texture = ExtResource("1_lfy31")
+
+[node name="CharacterBody2D" type="CharacterBody2D" parent="."]
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="CharacterBody2D"]
+sprite_frames = SubResource("SpriteFrames_dkylx")
+frame_progress = 0.74386
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CharacterBody2D"]
+position = Vector2(-4, -6)
+shape = SubResource("CapsuleShape2D_08pp3")
+
+[node name="Camera2D" type="Camera2D" parent="CharacterBody2D"]
+position = Vector2(1, 69)
