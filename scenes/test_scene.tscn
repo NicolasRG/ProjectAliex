@@ -62,6 +62,11 @@ height = 206.0
 
 [node name="Node2D" type="Node2D"]
 
+[node name="PropertiesExport" type="PropertiesExport" parent="."]
+number = -2
+ranged_number = 6
+node_path = NodePath("../CharacterBody2D")
+
 [node name="StaticBody2D" type="StaticBody2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
