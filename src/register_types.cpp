@@ -1,8 +1,9 @@
 #include "register_types.h"
 
 #include "gdexample.h"
-#include "antnode_p.h"
+#include "droplet.h"
 #include "propertiesexport.h"
+#include "maingame.h"
 
 #include <gdextension_interface.h>
 #include <godot_cpp/core/defs.hpp>
@@ -16,7 +17,8 @@ void initialize_example_module(ModuleInitializationLevel p_level) {
 	}
 
 	GDREGISTER_CLASS(GDExample);
-	GDREGISTER_CLASS(Antp);
+	GDREGISTER_CLASS(Droplet);
+	GDREGISTER_CLASS(MainGame);
 	GDREGISTER_CLASS(PropertiesExport);
 }
 

@@ -1,0 +1,43 @@
+[gd_scene load_steps=6 format=3 uid="uid://sbmkk4ioktwc"]
+
+[ext_resource type="Texture2D" uid="uid://dtuvbh0cbn344" path="res://assets/sprites/proto_droplet-Sheet.png" id="1_1s1ff"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xhncg"]
+atlas = ExtResource("1_1s1ff")
+region = Rect2(0, 0, 1000, 1000)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_h6rae"]
+atlas = ExtResource("1_1s1ff")
+region = Rect2(1000, 0, 1000, 1000)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_cghda"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xhncg")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_h6rae")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_rg6j1"]
+radius = 454.0
+height = 908.0
+
+[node name="Droplet" type="Droplet"]
+animatedspritepath = NodePath("AnimatedSprite2D")
+position = Vector2(0, 5.29624e+07)
+velocity = Vector2(0, 402508)
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_cghda")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(40, -68)
+shape = SubResource("CapsuleShape2D_rg6j1")
+
+[node name="Camera2D" type="Camera2D" parent="."]

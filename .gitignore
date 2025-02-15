@@ -2,3 +2,6 @@
 .godot/
 *.out
 *.os
+*.DS_Store
+*.dylib
+exports

@@ -1,91 +1,52 @@
-[gd_scene load_steps=12 format=3 uid="uid://cn6l7mwc3qpis"]
+[gd_scene load_steps=5 format=3 uid="uid://cn6l7mwc3qpis"]
 
-[ext_resource type="Texture2D" uid="uid://l1pnd8fmhuwo" path="res://assets/backgrounds/background_proto1.png" id="1_lfy31"]
-[ext_resource type="Texture2D" uid="uid://b4a81yaywqptm" path="res://assets/sprites/ant_proto_1-Sheet.png" id="2_cs573"]
+[ext_resource type="Texture2D" uid="uid://dg88xhjddlvhv" path="res://assets/backgrounds/bg_demo.png" id="2_lq31q"]
+[ext_resource type="PackedScene" uid="uid://sbmkk4ioktwc" path="res://scenes/droplet_test.tscn" id="2_un6j5"]
 
 [sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_0e2mf"]
 distance = -48.0
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_uirry"]
-atlas = ExtResource("2_cs573")
-region = Rect2(0, 0, 256, 256)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_0cc7f"]
-atlas = ExtResource("2_cs573")
-region = Rect2(256, 0, 256, 256)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_yi3he"]
-atlas = ExtResource("2_cs573")
-region = Rect2(512, 0, 256, 256)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_koslw"]
-atlas = ExtResource("2_cs573")
-region = Rect2(0, 256, 256, 256)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_yp3vd"]
-atlas = ExtResource("2_cs573")
-region = Rect2(256, 256, 256, 256)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_hit4q"]
-atlas = ExtResource("2_cs573")
-region = Rect2(512, 256, 256, 256)
-
-[sub_resource type="SpriteFrames" id="SpriteFrames_dkylx"]
-animations = [{
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_uirry")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_0cc7f")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_yi3he")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_koslw")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_yp3vd")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_hit4q")
-}],
-"loop": true,
-"name": &"default",
-"speed": 5.0
-}]
-
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_08pp3"]
-radius = 70.0
-height = 206.0
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_4dy4v"]
+normal = Vector2(0.999909, 0.0135123)
+distance = -29.2762
 
 [node name="Node2D" type="Node2D"]
+position = Vector2(501, -127)
 
 [node name="PropertiesExport" type="PropertiesExport" parent="."]
 number = -2
 ranged_number = 6
-node_path = NodePath("../CharacterBody2D")
 
-[node name="StaticBody2D" type="StaticBody2D" parent="."]
+[node name="TextureRect" type="TextureRect" parent="."]
+modulate = Color(0.890628, 0.792782, 0.366418, 1)
+offset_left = -495.0
+offset_top = -964.0
+offset_right = 5436.0
+offset_bottom = 126.0
+texture = ExtResource("2_lq31q")
+expand_mode = 1
+stretch_mode = 1
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
+[node name="Floor" type="StaticBody2D" parent="."]
+position = Vector2(2.08165e-12, 2.08165e-12)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Floor"]
 position = Vector2(1, 69)
 shape = SubResource("WorldBoundaryShape2D_0e2mf")
 
-[node name="BackgroundProto1" type="Sprite2D" parent="."]
-position = Vector2(-5, -35)
-texture = ExtResource("1_lfy31")
+[node name="Droplet" parent="." instance=ExtResource("2_un6j5")]
+MAX_RUN_SPEED = 500.0
+RUN_ACCELERATION = 2.0
+BASE_RUN_SPEED = 1.0
+GRAVITY = 1000.0
+LOG_DRAG = 50.0
+position = Vector2(280.691, 78.3882)
+scale = Vector2(0.1, 0.1)
+velocity = Vector2(0, 0)
 
-[node name="CharacterBody2D" type="CharacterBody2D" parent="."]
+[node name="Left Wall" type="StaticBody2D" parent="."]
+position = Vector2(-5, 16)
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="CharacterBody2D"]
-sprite_frames = SubResource("SpriteFrames_dkylx")
-frame_progress = 0.74386
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="CharacterBody2D"]
-position = Vector2(-4, -6)
-shape = SubResource("CapsuleShape2D_08pp3")
-
-[node name="Camera2D" type="Camera2D" parent="CharacterBody2D"]
-position = Vector2(1, 69)
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Left Wall"]
+position = Vector2(-470, -1)
+shape = SubResource("WorldBoundaryShape2D_4dy4v")

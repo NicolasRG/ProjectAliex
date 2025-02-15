@@ -1,0 +1,40 @@
+[gd_scene load_steps=5 format=3 uid="uid://bjbaxff4h2l35"]
+
+[ext_resource type="PackedScene" uid="uid://cn6l7mwc3qpis" path="res://scenes/test_scene.tscn" id="1_fdx5v"]
+[ext_resource type="Script" path="res://scripts/main_game_proto.gd" id="1_gme2u"]
+[ext_resource type="PackedScene" uid="uid://1ope3xcswbw2" path="res://scenes/demo_ui_sliders.tscn" id="1_nff3a"]
+[ext_resource type="Script" path="res://assets/sprites/DemoControl.gd" id="2_dna2n"]
+
+[node name="MainGame" type="Node"]
+script = ExtResource("1_gme2u")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+layer = 3
+
+[node name="Control" type="Control" parent="CanvasLayer"]
+layout_mode = 3
+anchor_left = 0.095
+anchor_right = 0.095
+offset_left = -0.440007
+offset_top = 2.0
+offset_right = 769.56
+offset_bottom = 306.0
+script = ExtResource("2_dna2n")
+
+[node name="VBoxContainer" parent="CanvasLayer/Control" instance=ExtResource("1_nff3a")]
+layout_mode = 0
+offset_left = 118.0
+offset_top = 11.0
+offset_right = 876.0
+offset_bottom = 671.0
+
+[node name="SpeedLabel" type="Label" parent="CanvasLayer/Control"]
+layout_mode = 0
+offset_left = -0.999992
+offset_top = 5.0
+offset_right = 108.0
+offset_bottom = 28.0
+text = "current Speed"
+
+[node name="Node2D" parent="." instance=ExtResource("1_fdx5v")]
+position = Vector2(447, 184)
