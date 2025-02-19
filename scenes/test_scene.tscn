@@ -13,10 +13,6 @@ distance = -29.2762
 [node name="Node2D" type="Node2D"]
 position = Vector2(501, -127)
 
-[node name="PropertiesExport" type="PropertiesExport" parent="."]
-number = -2
-ranged_number = 6
-
 [node name="TextureRect" type="TextureRect" parent="."]
 modulate = Color(0.890628, 0.792782, 0.366418, 1)
 offset_left = -495.0
@@ -35,11 +31,6 @@ position = Vector2(1, 69)
 shape = SubResource("WorldBoundaryShape2D_0e2mf")
 
 [node name="Droplet" parent="." instance=ExtResource("2_un6j5")]
-MAX_RUN_SPEED = 500.0
-RUN_ACCELERATION = 2.0
-BASE_RUN_SPEED = 1.0
-GRAVITY = 1000.0
-LOG_DRAG = 50.0
 position = Vector2(280.691, 78.3882)
 scale = Vector2(0.1, 0.1)
 velocity = Vector2(0, 0)

@@ -5,6 +5,7 @@
 #include <godot_cpp/classes/animated_sprite2d.hpp>
 #include <godot_cpp/classes/character_body2d.hpp>
 #include <godot_cpp/variant/node_path.hpp>
+#include "./states/dropletstates/dropletstate.h"
 
 namespace godot {
 
@@ -26,7 +27,8 @@ class Droplet : public CharacterBody2D {
 
 		NodePath animatedspritepath;
 
-		double calculate_run_veloicty(double delta, bool left, double velocity);
+		double calculate_run_veloicty(double delta, bool left, godot::Input* input_handler, AnimatedSprite2D* animatedsprite , double velocity);
+		double calculate_jump_velocity(double delta, bool left, godot::Input* input_handler, AnimatedSprite2D* animatedsprite , double velocity);
 
 	protected:
 		static void _bind_methods();
@@ -34,6 +36,8 @@ class Droplet : public CharacterBody2D {
 	public:
 		Droplet();
 		~Droplet();
+		 
+		DropletState *state;
 	
 		void _process(double delta) override;
 		void _ready() override;

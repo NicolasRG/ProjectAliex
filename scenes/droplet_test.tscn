@@ -30,11 +30,12 @@ height = 908.0
 
 [node name="Droplet" type="Droplet"]
 animatedspritepath = NodePath("AnimatedSprite2D")
-position = Vector2(0, 5.29624e+07)
-velocity = Vector2(0, 402508)
+position = Vector2(54.7042, 1.24689e+08)
+velocity = Vector2(0, 770209)
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_cghda")
+flip_h = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(40, -68)

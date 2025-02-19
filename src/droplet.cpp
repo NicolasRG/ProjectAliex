@@ -4,10 +4,16 @@
 #include <godot_cpp/classes/input.hpp>
 #include <godot_cpp/classes/node.hpp>
 #include <godot_cpp/variant/node_path.hpp>
-//Users/nicolas/Documents/ProjectAliex/godot-cpp/gen/include/godot_cpp/classes/input_map.hpp
+#include <godot_cpp/classes/animated_sprite2d.hpp>
+
 #include <godot_cpp/classes/input_map.hpp>
 #include <string>
 #include <math.h>
+#include "./states/dropletstates/idlestate.cpp"
+// #include "./states/dropletstates/jumpstate.cpp"
+// #include "./states/dropletstates/runstate.cpp"
+
+
 using namespace godot;
 
 void Droplet::_bind_methods() {
@@ -47,6 +53,7 @@ Droplet::Droplet() {
 	// Initialize any variables here.
 	time_passed = 0.0;
     UtilityFunctions::print("Creating My Object");
+    state = new IdleState();
 
     Node* animatedsprite_or_null = get_node_or_null(animatedspritepath);
      if(animatedsprite_or_null == nullptr || animatedsprite_or_null == NULL){
@@ -65,7 +72,7 @@ Droplet::Droplet() {
 
 Droplet::~Droplet() {
 	// Add your cleanup here.
-    UtilityFunctions::print("Deleting My Object");
+    UtilityFunctions::print("Deleting Droplet");
 }
 
 void Droplet::_process(double delta) {
@@ -79,24 +86,15 @@ void Droplet::_process(double delta) {
     
     AnimatedSprite2D* animatedsprite = (AnimatedSprite2D*)animatedsprite_or_null;
 
-    if(input_handler->is_action_just_pressed("character_jump") && is_on_floor()){
-        vel.y = -1 * GRAVITY;
-        UtilityFunctions::print("Jump hoe");
-        animatedsprite->play();
-    }else if(!is_on_floor()){
-        vel.y += GRAVITY * delta + LOG_DRAG;
-    }
+    //todo fix arg for direction
+    vel.y = this->calculate_jump_velocity(delta, false,input_handler, animatedsprite, vel.y);
     
     if (input_handler->is_action_pressed("character_left")){
-        vel.x = calculate_run_veloicty(delta, true, vel.x);
-        UtilityFunctions::print("move left hoe");
-        animatedsprite->set_flip_h(false);
-        animatedsprite->play();
+        vel.x = calculate_run_veloicty(delta, true,input_handler, animatedsprite, vel.x);
+    
     }else if (input_handler->is_action_pressed("character_right")){
-        vel.x = calculate_run_veloicty(delta, false, vel.x);
-        UtilityFunctions::print("move right hoe");
-        animatedsprite->set_flip_h(true);
-        animatedsprite->play();
+        vel.x = calculate_run_veloicty(delta, false,input_handler, animatedsprite, vel.x);
+        
     }
     else{
         //if we want to disable the movement slide then rework to set value to zero when switching sides
@@ -111,7 +109,7 @@ void Droplet::_process(double delta) {
 }
 //internal methods
 
-double Droplet::calculate_run_veloicty(double delta, bool left, double velocity){
+double Droplet::calculate_run_veloicty(double delta, bool left, godot::Input* input_handler, AnimatedSprite2D* animatedsprite , double velocity){
     UtilityFunctions::print(velocity);
     const double DELTA_DILUTANT = .1;
 
@@ -119,8 +117,15 @@ double Droplet::calculate_run_veloicty(double delta, bool left, double velocity)
 
     if(left){
         direction  = -1;
+        animatedsprite->set_flip_h(false);
+        UtilityFunctions::print("move left");
+        animatedsprite->play();
     }else{
         direction = 1;
+        UtilityFunctions::print("move right");
+        //move this to state
+        animatedsprite->set_flip_h(true);
+        animatedsprite->play();
     }
 
     double calcualted_accelartion = (delta * DELTA_DILUTANT * RUN_ACCELERATION);
@@ -139,10 +144,23 @@ double Droplet::calculate_run_veloicty(double delta, bool left, double velocity)
 
 }
 
+double Droplet::calculate_jump_velocity(double delta, bool isLeft, godot::Input* input_handler, AnimatedSprite2D* animatedsprite , double velocity){
+    double vertical_velocity = velocity;
+    if(input_handler->is_action_just_pressed("character_jump") && is_on_floor()){
+        vertical_velocity = -1 * GRAVITY;
+        UtilityFunctions::print("Jump hoe");
+        animatedsprite->play();
+    }else if(!is_on_floor()){
+        vertical_velocity += GRAVITY * delta + LOG_DRAG;
+    }
+    return vertical_velocity;
+}
+
 //getter and setters
 void Droplet::_ready() {
     InputMap::get_singleton()->load_from_project_settings();
     UtilityFunctions::print("ready got called");
+    UtilityFunctions::print(animatedspritepath);
     Node* animatedsprite_or_null = get_node_or_null(animatedspritepath);
 
     if (animatedsprite_or_null == nullptr){
@@ -200,10 +218,14 @@ double Droplet::get_log_drag(){
 };
 
 void Droplet::set_animatedspritepath(NodePath p_animatedSprite){
+    UtilityFunctions::print("SET ANIMATED SPRITE");
+    UtilityFunctions::print(p_animatedSprite);
     animatedspritepath = p_animatedSprite;
 }
 
 NodePath Droplet::get_animatedspritepath(){
+    UtilityFunctions::print("GET ANIMATED SPRITE");
+    UtilityFunctions::print(animatedspritepath);
     return animatedspritepath;
 }
 
