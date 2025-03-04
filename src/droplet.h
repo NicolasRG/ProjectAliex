@@ -1,11 +1,18 @@
-#ifndef ANTNODE_P_H
-#define ANTNODE_P_H
+#ifndef DROPLET_NODE_P_H
+#define DROPLET_NODE_P_H
 
 #include <godot_cpp/classes/node2d.hpp>
 #include <godot_cpp/classes/animated_sprite2d.hpp>
 #include <godot_cpp/classes/character_body2d.hpp>
 #include <godot_cpp/variant/node_path.hpp>
+#include <godot_cpp/variant/utility_functions.hpp>
 #include "./states/dropletstates/dropletstate.h"
+#include "./states/dropletstates/idlestate.h"
+#include "./states/dropletstates/runstate.h"
+#include "./states/dropletstates/util_operations.h"
+#include <string>
+#include <map>
+
 
 namespace godot {
 
@@ -13,22 +20,19 @@ class Droplet : public CharacterBody2D {
 	GDCLASS(Droplet, CharacterBody2D)
 
 	private:
-		double time_passed;
-		//TODD MOVE THIS TO SCENE BASED VAR/STATE 
-		//MOVEMENT RELATED STATS
-		double MAX_RUN_SPEED = 300.0;
-		double RUN_ACCELERATION = 5;
-		double BASE_RUN_SPEED = 100.0;  
-		
-
-		//JUMP RELATED STATS
-		double GRAVITY = 100.0;
-		double LOG_DRAG = 25.0;
+		DropletAttrs dropletAttrs;
 
 		NodePath animatedspritepath;
 
 		double calculate_run_veloicty(double delta, bool left, godot::Input* input_handler, AnimatedSprite2D* animatedsprite , double velocity);
 		double calculate_jump_velocity(double delta, bool left, godot::Input* input_handler, AnimatedSprite2D* animatedsprite , double velocity);
+
+		//needs to have a default so uhh idle event it is
+		DropletState* map_state_name(int state_id){
+			return internal_map_state_idl( state_id);
+		}
+
+		DropletState* state = new IdleState();
 
 	protected:
 		static void _bind_methods();
@@ -37,7 +41,7 @@ class Droplet : public CharacterBody2D {
 		Droplet();
 		~Droplet();
 		 
-		DropletState *state;
+		
 	
 		void _process(double delta) override;
 		void _ready() override;
@@ -60,7 +64,11 @@ class Droplet : public CharacterBody2D {
 
 		void set_log_drag(double p_log_drag);
 		double get_log_drag();
+
+		void set_state(int new_state_name);
+		int get_state();
 	};
 }
+
 
 #endif

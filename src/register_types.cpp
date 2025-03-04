@@ -4,6 +4,7 @@
 #include "droplet.h"
 #include "propertiesexport.h"
 #include "maingame.h"
+#include "states/dropletstates/dropletstate.h"
 
 #include <gdextension_interface.h>
 #include <godot_cpp/core/defs.hpp>
@@ -20,6 +21,7 @@ void initialize_example_module(ModuleInitializationLevel p_level) {
 	GDREGISTER_CLASS(Droplet);
 	GDREGISTER_CLASS(MainGame);
 	GDREGISTER_CLASS(PropertiesExport);
+	GDREGISTER_ABSTRACT_CLASS(DropletState);
 }
 
 void uninitialize_example_module(ModuleInitializationLevel p_level) {

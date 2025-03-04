@@ -1,7 +1,5 @@
-#ifndef DROPLSET_IDLE_STATE_P_H
-#define DROPLSET_IDLE_STATE_P_H
-
-#include "dropletstate.h"
+#include "runstate.h"
+#include "idlestate.h"
 using namespace godot;
 
 
@@ -12,29 +10,54 @@ using namespace godot;
 //jumping
 //slowed or is that part of the others??
 
-class IdleState: public DropletState
-{
-public:
-const std::string stateName = "DROPLET_IDLE_STATE";
-    //TODO MAKE SURE THAT ALL OLD STATES ARE EXPLICITLY DELETED WHEN VARIABLE ARE SETUP!!!!!!
-    IdleState(DropletState* oldstate){
-        UtilityFunctions::print("Going into idle state");
-    };
-
-    IdleState(){
-        UtilityFunctions::print("Going into idle state || THIS SHOULD BE A BRAND NEW DROPLET BEING INSTIATED");
-    };
-
-
-    ~IdleState(){};
-    
-    //im sure i can do this in an outside declartion with the same syntax
-    double calculate_run_veloicty(double delta, bool left, godot::Input* input_handler, AnimatedSprite2D* animatedsprite , double velocity, 
-        double RUN_ACCELERATION, double BASE_RUN_SPEED, double MAX_RUN_SPEED) override{
-        return 0.00;
-    };   // "= 0" part makes this method pure virtual, and
-    double calculate_jump_velocity(double delta, bool left, Input* input_handler, AnimatedSprite2D* animatedsprite , double velocity)override{
-        return 0.00;
-    };
+//TODO MAKE SURE THAT ALL OLD STATES ARE EXPLICITLY DELETED WHEN VARIABLE ARE SETUP!!!!!!
+IdleState::IdleState(DropletState* oldstate){
+    UtilityFunctions::print("Going into idle state");
 };
-#endif
+
+IdleState::IdleState(){
+    UtilityFunctions::print("Going into idle state || THIS SHOULD BE A BRAND NEW DROPLET BEING INSTIATED");
+};
+
+IdleState* IdleState::deep_copy(){
+    return new IdleState();
+}
+
+
+IdleState::~IdleState(){};
+
+//im sure i can do this in an outside declartion with the same syntax
+double IdleState::calculate_run_veloicty(double delta, bool left, godot::Input* input_handler, AnimatedSprite2D* animatedsprite , double velocity, DropletAttrs dropletAttrs){
+    //if this thing has movement needs to set new state to moving and run the process to reurn base speed + any other modifier   
+    animatedsprite->play();
+    return dropletAttrs.BASE_RUN_SPEED;
+};  
+double IdleState::calculate_jump_velocity(double delta, bool left, Input* input_handler, AnimatedSprite2D* animatedsprite , double velocity, DropletAttrs dropletAttrs){
+    
+    double vertical_velocity = -1 * dropletAttrs.GRAVITY;
+    UtilityFunctions::print("Jump hoe");
+    //todo bind to the jump 
+    return vertical_velocity;
+};
+
+bool IdleState::is_dead(){
+    //changes state to death and updates other stuff i guess
+    return false;
+};
+
+//TODO network impl
+dropletnetworkstate IdleState::get_networking_data(){
+    return dropletnetworkstate{};
+};
+
+// this method checks to see if the state of the droplet needs to be updated only based on its actions
+DropletState* IdleState::get_new_state(Vector2 vel,  Input* input_handler,DropletAttrs dropletAttrs){
+    if(vel.y != 0){
+        //TODO update this for jump
+        this->next_state = new IdleState();
+    }else if(vel.x != 0){
+        this->next_state = new RunState(this);
+    }
+
+    return this->next_state;
+}

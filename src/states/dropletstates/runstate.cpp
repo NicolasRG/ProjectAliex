@@ -1,4 +1,4 @@
-#include "dropletstate.h"
+#include "runstate.h"
 
 using namespace godot;
 
@@ -10,25 +10,11 @@ using namespace godot;
 //jumping
 //slowed or is that part of the others??
 
-class RunState: public DropletState
-{
-public:
-    const std::string stateName = "DROPLET_RUN_STATE";
-    //TODO MAKE SURE THAT ALL OLD STATES ARE EXPLICITLY DELETED WHEN VARIABLE ARE SETUP!!!!!!
-    RunState(DropletState* oldstate){
-        UtilityFunctions::print("Going into run state");
-    };
+RunState* RunState::deep_copy(){
+    return new RunState();
+}
 
-    ~RunState(){};
-    
-
-    double calculate_run_veloicty(double delta, bool left, godot::Input* input_handler, AnimatedSprite2D* animatedsprite , double velocity, 
-        double RUN_ACCELERATION, double BASE_RUN_SPEED, double MAX_RUN_SPEED);  
-    double calculate_jump_velocity(double delta, bool left, Input* input_handler, AnimatedSprite2D* animatedsprite , double velocity);
-};
-
-double RunState::calculate_run_veloicty(double delta, bool left, godot::Input* input_handler, AnimatedSprite2D* animatedsprite , double velocity, 
-    double RUN_ACCELERATION, double BASE_RUN_SPEED, double MAX_RUN_SPEED){
+double RunState::calculate_run_veloicty(double delta, bool left, godot::Input* input_handler, AnimatedSprite2D* animatedsprite , double velocity, DropletAttrs dropletAttrs){
     UtilityFunctions::print(velocity);
     const double DELTA_DILUTANT = .1;
 
@@ -47,21 +33,46 @@ double RunState::calculate_run_veloicty(double delta, bool left, godot::Input* i
         animatedsprite->play();
     }
 
-    double calcualted_accelartion = (delta * DELTA_DILUTANT * RUN_ACCELERATION);
-    double calculated_velocity = (BASE_RUN_SPEED  + calcualted_accelartion )* direction + velocity;
+    double calcualted_accelartion = (delta * DELTA_DILUTANT * dropletAttrs.RUN_ACCELERATION);
+    double calculated_velocity = (dropletAttrs.BASE_RUN_SPEED  + calcualted_accelartion )* direction + velocity;
     //this should be some abs
     if(calculated_velocity > 0){
-        calculated_velocity = fmin(calculated_velocity, MAX_RUN_SPEED);
+        calculated_velocity = fmin(calculated_velocity, dropletAttrs.MAX_RUN_SPEED);
     }else if(calculated_velocity < 0){
-        calculated_velocity = fmax(calculated_velocity, (-1*MAX_RUN_SPEED));
+        calculated_velocity = fmax(calculated_velocity, (-1*dropletAttrs.MAX_RUN_SPEED));
     }
-        //if the velocity is zerio we dont care
+        //if the velocity is zero we dont care
 
     std::string message = std::to_string(calculated_velocity);
     UtilityFunctions::print(message.data()); 
     return calculated_velocity;
 }
 
-double RunState::calculate_jump_velocity(double delta, bool left, Input* input_handler, AnimatedSprite2D* animatedsprite , double velocity){
-    return 0.00;
+double RunState::calculate_jump_velocity(double delta, bool left, Input* input_handler, AnimatedSprite2D* animatedsprite , double velocity, DropletAttrs dropletAttrs){  
+    double vertical_velocity = -1 * dropletAttrs.GRAVITY;
+    UtilityFunctions::print("Jump hoe");
+    //todo bind to the jump 
+    return vertical_velocity;
+}
+
+bool RunState::is_dead(){
+    //changes state to death and updates other stuff i guess
+    return false;
+};
+
+//TODO network impl
+dropletnetworkstate RunState::get_networking_data(){
+    return dropletnetworkstate{};
+};
+
+DropletState* RunState::get_new_state(Vector2 vel,  Input* input_handler,DropletAttrs dropletAttrs){
+    //TODO this
+    if(vel.y != 0.00){
+        //TODO update this for jump
+        this->next_state = new RunState(this);
+    }else if(vel.x == 0.00 && vel.y){
+        this->next_state = new IdleState(this);
+    }
+
+    return this->next_state;
 }

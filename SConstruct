@@ -15,21 +15,28 @@ mingw_path = '/opt/homebrew/bin'
 
 # tweak this if you want to use different folders, or more folders, to store your source code in.
 env.Append(CPPPATH=["src/","steamassets/public/"])
-
-print("IN PERANT FILE??")
-
-
 if env["platform"] == "macos":
     def AllSources(node='.', pattern='*'):
         result = [AllSources(dir, pattern)
                 for dir in Glob(str(node)+'/*')
                 if dir.isdir()]
+        #need to unwrap the files found in here
+        
         result += [source
                 for source in Glob(str(node)+'/'+pattern)
                 if source.isfile()]
         return result
 
     sources = AllSources('./src/', '*.c*')
+    # print((sources[0][0]).get_contents())
+    # print(len(sources))
+    # print(len(sources[0]))
+
+    for l in sources:
+        print(l)
+    
+    #src/states/dropletstates/dropletstate.h
+    
     env.Append(LIBS=["steam_api"])
     env.Append(LIBPATH=["steamassets/osx"])
     print(env)
@@ -50,7 +57,7 @@ elif env["platform"] == "windows":
                 if source.isfile()]
         return result
 
-    sources = AllSources('./src/', '*.c*')
+    sources = AllSources('./src/', '*.c*', '')
     env.Append(LIBS=["steam_api64"])
     env.Append(LIBPATH=["steamassets/windows64"])
     env['CC'] = os.path.join(mingw_path, 'x86_64-w64-mingw32-gcc')  # C compiler
