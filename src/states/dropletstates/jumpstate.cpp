@@ -1,6 +1,6 @@
 #include "dropletstate.h"
 using namespace godot;
-
+using namespace DropState;
 
 //if i make this class house the actual base movementmethods
 //what states do i need how much code will the reuse

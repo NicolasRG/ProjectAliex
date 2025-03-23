@@ -9,11 +9,12 @@
 #include <godot_cpp/classes/input_map.hpp>
 #include <string>
 #include <math.h>
-#include "./states/dropletstates/idlestate.h"
-#include "./states/dropletstates/runstate.h"
+// #include "./states/dropletstates/idlestate.h"
+// #include "./states/dropletstates/runstate.h"
 
 
 using namespace godot;
+using namespace DropState;
 
 void Droplet::_bind_methods() {
 
@@ -42,10 +43,10 @@ void Droplet::_bind_methods() {
     //so turns out if godot editor doesnt have the hints and types it gets real mad and crashes, game runs fine tho
     ADD_PROPERTY(PropertyInfo(Variant::FLOAT, "LOG_DRAG"), "set_log_drag", "get_log_drag");
 
-    ClassDB::bind_method(D_METHOD("get_state"), &Droplet::get_state);
-	ClassDB::bind_method(D_METHOD("set_state", "state_name"), &Droplet::set_state); 
-    //so turns out if godot editor doesnt have the hints and types it gets real mad and crashes, game runs fine tho
-    ADD_PROPERTY(PropertyInfo(Variant::INT, "State_Name"), "set_state", "get_state");
+    // ClassDB::bind_method(D_METHOD("get_state"), &Droplet::get_state);
+	// ClassDB::bind_method(D_METHOD("set_state", "state_name"), &Droplet::set_state); 
+    // //so turns out if godot editor doesnt have the hints and types it gets real mad and crashes, game runs fine tho
+    // ADD_PROPERTY(PropertyInfo(Variant::INT, "State_Name"), "set_state", "get_state");
 
     ClassDB::bind_method(D_METHOD("get_animatedspritepath"), &Droplet::get_animatedspritepath);
 	ClassDB::bind_method(D_METHOD("set_animatedspritepath", "_animatedSprite"), &Droplet::set_animatedspritepath);
@@ -54,10 +55,12 @@ void Droplet::_bind_methods() {
 }
 
 Droplet::Droplet() {
+    dropletAttrs =  std::unique_ptr<DropletAttrs>();
 	// Initialize any variables here.
-	dropletAttrs.time_passed = 0.0;
+	dropletAttrs->time_passed = 0.0;
     UtilityFunctions::print("Creating My Object");
-    state = new IdleState();
+    //if anything breaks it this
+    //state = new IdleState();
 
     Node* animatedsprite_or_null = get_node_or_null(animatedspritepath);
      if(animatedsprite_or_null == nullptr || animatedsprite_or_null == NULL){
@@ -136,13 +139,13 @@ double Droplet::calculate_run_veloicty(double delta, bool left, godot::Input* in
         animatedsprite->play();
     }
 
-    double calcualted_accelartion = (delta * DELTA_DILUTANT * dropletAttrs.RUN_ACCELERATION);
-    double calculated_velocity = (dropletAttrs.BASE_RUN_SPEED  + calcualted_accelartion )* direction + velocity;
+    double calcualted_accelartion = (delta * DELTA_DILUTANT * dropletAttrs->RUN_ACCELERATION);
+    double calculated_velocity = (dropletAttrs->BASE_RUN_SPEED  + calcualted_accelartion )* direction + velocity;
     //this should be some abs
     if(calculated_velocity > 0){
-        calculated_velocity = fmin(calculated_velocity, dropletAttrs.MAX_RUN_SPEED);
+        calculated_velocity = fmin(calculated_velocity, dropletAttrs->MAX_RUN_SPEED);
     }else if(calculated_velocity < 0){
-        calculated_velocity = fmax(calculated_velocity, (-1*dropletAttrs.MAX_RUN_SPEED));
+        calculated_velocity = fmax(calculated_velocity, (-1*dropletAttrs->MAX_RUN_SPEED));
     }
         //if the velocity is zerio we dont care
 
@@ -155,11 +158,11 @@ double Droplet::calculate_run_veloicty(double delta, bool left, godot::Input* in
 double Droplet::calculate_jump_velocity(double delta, bool isLeft, godot::Input* input_handler, AnimatedSprite2D* animatedsprite , double velocity){
     double vertical_velocity = velocity;
     if(input_handler->is_action_just_pressed("character_jump") && is_on_floor()){
-        vertical_velocity = -1 * dropletAttrs.GRAVITY;
+        vertical_velocity = -1 * dropletAttrs->GRAVITY;
         UtilityFunctions::print("Jump hoe");
         animatedsprite->play();
     }else if(!is_on_floor()){
-        vertical_velocity += dropletAttrs.GRAVITY * delta + dropletAttrs.LOG_DRAG;
+        vertical_velocity += dropletAttrs->GRAVITY * delta + dropletAttrs->LOG_DRAG;
     }
     return vertical_velocity;
 }
@@ -181,58 +184,60 @@ void Droplet::_ready() {
 }
 
 void Droplet::set_max_run_speed(double p_max_run_speed){
-    dropletAttrs.MAX_RUN_SPEED = p_max_run_speed;
+    dropletAttrs->MAX_RUN_SPEED = p_max_run_speed;
 }
 
 double Droplet::get_max_run_speed(){
     //need to assign it to another var before referncing it as const funciton gets ma
-    return (dropletAttrs.MAX_RUN_SPEED);
+    return (dropletAttrs->MAX_RUN_SPEED);
 };
 
 void Droplet::set_run_acceleration(double p_run_acceleration){
-    dropletAttrs.RUN_ACCELERATION = p_run_acceleration;
+    dropletAttrs->RUN_ACCELERATION = p_run_acceleration;
 }
 
 double Droplet::get_run_acceleration(){
     //need to assign it to another var before referncing it as const funciton gets ma
-    return (dropletAttrs.RUN_ACCELERATION);
+    return (dropletAttrs->RUN_ACCELERATION);
 };
 
 void Droplet::set_base_run_speed(double p_base_run_speed){
-    dropletAttrs.BASE_RUN_SPEED = p_base_run_speed;
+    dropletAttrs->BASE_RUN_SPEED = p_base_run_speed;
 }
 
 double Droplet::get_base_run_speed(){
     //need to assign it to another var before referncing it as const funciton gets ma
-    return (dropletAttrs.BASE_RUN_SPEED);
+    return (dropletAttrs->BASE_RUN_SPEED);
 };
 
 double Droplet::get_gravity(){
     //need to assign it to another var before referncing it as const funciton gets ma
-    return (dropletAttrs.GRAVITY);
+    return (dropletAttrs->GRAVITY);
 };
 
 void Droplet::set_gravity(double p_gravity){
-    dropletAttrs.GRAVITY = p_gravity;
+    dropletAttrs->GRAVITY = p_gravity;
 }
 
 void Droplet::set_log_drag(double p_log_drag){
-    dropletAttrs.LOG_DRAG = p_log_drag;
+    dropletAttrs->LOG_DRAG = p_log_drag;
 }
 
 double Droplet::get_log_drag(){
     //need to assign it to another var before referncing it as const funciton gets ma
-    return (dropletAttrs.LOG_DRAG);
+    return (dropletAttrs->LOG_DRAG);
 };
 
-void Droplet::set_state(int state_id){
-    this->state = this->map_state_name(state_id);
-}
+// void Droplet::set_state(int state_id){    
+//     //figure out how to handle this
+//     this->state.reset(map_state_name(state_id));
 
-int Droplet::get_state(){
-    //need to assign it to another var before referncing it as const funciton gets ma
-    return this->state->state_id;
-};
+// }
+
+// int Droplet::get_state(){
+//     //need to assign it to another var before referncing it as const funciton gets ma
+//     return this->state->state_id;
+// };
 
 void Droplet::set_animatedspritepath(NodePath p_animatedSprite){
     UtilityFunctions::print("SET ANIMATED SPRITE");

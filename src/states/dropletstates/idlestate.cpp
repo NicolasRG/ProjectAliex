@@ -1,7 +1,7 @@
 #include "runstate.h"
 #include "idlestate.h"
 using namespace godot;
-
+using namespace DropState;
 
 //if i make this class house the actual base movementmethods
 //what states do i need how much code will the reuse
@@ -51,13 +51,13 @@ dropletnetworkstate IdleState::get_networking_data(){
 };
 
 // this method checks to see if the state of the droplet needs to be updated only based on its actions
-DropletState* IdleState::get_new_state(Vector2 vel,  Input* input_handler,DropletAttrs dropletAttrs){
-    if(vel.y != 0){
-        //TODO update this for jump
-        this->next_state = new IdleState();
-    }else if(vel.x != 0){
-        this->next_state = new RunState(this);
-    }
+// DropletState* IdleState::get_new_state(Vector2 vel,  Input* input_handler,DropletAttrs dropletAttrs){
+//     if(vel.y != 0){
+//         //TODO update this for jump
+//         this->next_state = new IdleState();
+//     }else if(vel.x != 0){
+//         this->next_state = new RunState(this);
+//     }
 
-    return this->next_state;
-}
+//     return this->next_state;
+// }

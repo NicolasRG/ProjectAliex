@@ -1,7 +1,7 @@
 #ifndef DROPLET_NODE_ATTR_P_H
 #define DROPLET_NODE_ATTR_P_H
 
-namespace godot {
+namespace DropState {
     struct DropletAttrs{
         double time_passed;
         //TODD MOVE THIS TO SCENE BASED VAR/STATE 

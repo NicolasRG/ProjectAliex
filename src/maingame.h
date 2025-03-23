@@ -18,6 +18,8 @@ namespace godot {
             MainGame();
             ~MainGame();
 
+            controller::MasterController* controller;
+
             // void _process(double delta) override;
             //instiate singleton and global game logic
             void _ready() override;

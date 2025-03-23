@@ -1,10 +1,12 @@
 #ifndef DROPLSET_NETWORK_STATE_P_H
 #define DROPLSET_NETWORK_STATE_P_H
 
-struct dropletnetworkstate
+namespace DropState {
+    struct dropletnetworkstate
 {
     bool testval;
 };
+}
 
 
 #endif

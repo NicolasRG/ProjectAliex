@@ -4,6 +4,7 @@
 #include "dropletstate.h"
 #include "runstate.h"
 using namespace godot;
+using namespace DropState;
 
 
 //if i make this class house the actual base movementmethods
@@ -13,7 +14,7 @@ using namespace godot;
 //jumping
 //slowed or is that part of the others??
 
-class IdleState: public virtual DropletState
+class IdleState: public DropletState
 {
 public:
     const std::string stateName = "DROPLET_IDLE_STATE";

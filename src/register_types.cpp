@@ -16,12 +16,11 @@ void initialize_example_module(ModuleInitializationLevel p_level) {
 	if (p_level != MODULE_INITIALIZATION_LEVEL_SCENE) {
 		return;
 	}
-
+	//GDREGISTER_ABSTRACT_CLASS(DropletState);
 	GDREGISTER_CLASS(GDExample);
 	GDREGISTER_CLASS(Droplet);
 	GDREGISTER_CLASS(MainGame);
 	GDREGISTER_CLASS(PropertiesExport);
-	GDREGISTER_ABSTRACT_CLASS(DropletState);
 }
 
 void uninitialize_example_module(ModuleInitializationLevel p_level) {

@@ -5,7 +5,7 @@
 #include "idlestate.h"
 
 using namespace godot;
-
+using namespace DropState;
 
 //if i make this class house the actual base movementmethods
 //what states do i need how much code will the reuse
@@ -39,6 +39,6 @@ public:
     double calculate_jump_velocity(double delta, bool left, Input* input_handler, AnimatedSprite2D* animatedsprite , double velocity, DropletAttrs dropletAttrs) ;
     bool is_dead() ;
     dropletnetworkstate get_networking_data() ;
-    DropletState* get_new_state(Vector2 vel,  Input* input_handler,DropletAttrs dropletAttrs) ;
+    //DropletState* get_new_state(Vector2 vel,  Input* input_handler,DropletAttrs dropletAttrs) ;
 };
 #endif
