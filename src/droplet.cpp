@@ -55,7 +55,8 @@ void Droplet::_bind_methods() {
 }
 
 Droplet::Droplet() {
-    dropletAttrs =  std::unique_ptr<DropletAttrs>();
+    DropletAttrs* attrs_ptr = new DropletAttrs();
+    dropletAttrs =  std::unique_ptr<DropletAttrs>(attrs_ptr);
 	// Initialize any variables here.
 	dropletAttrs->time_passed = 0.0;
     UtilityFunctions::print("Creating My Object");
