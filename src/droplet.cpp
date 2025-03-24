@@ -92,15 +92,19 @@ void Droplet::_process(double delta) {
     }
     
     AnimatedSprite2D* animatedsprite = (AnimatedSprite2D*)animatedsprite_or_null;
-
+    DropletAttrs dropAttrs = *this->dropletAttrs;
     //todo fix arg for direction
-    vel.y = this->calculate_jump_velocity(delta, false,input_handler, animatedsprite, vel.y);
+    if(input_handler->is_action_pressed("character_jump")){
+        vel.y = this->state->calculate_jump_velocity(delta, false,input_handler, animatedsprite, vel.y, dropAttrs);
+    }
+    
     
     if (input_handler->is_action_pressed("character_left")){
         vel.x = calculate_run_veloicty(delta, true,input_handler, animatedsprite, vel.x);
-    
+        vel.x = this->state->calculate_run_veloicty(delta, true,input_handler, animatedsprite, vel.x, dropAttrs);
     }else if (input_handler->is_action_pressed("character_right")){
         vel.x = calculate_run_veloicty(delta, false,input_handler, animatedsprite, vel.x);
+        vel.x = this->state->calculate_run_veloicty(delta, false,input_handler, animatedsprite, vel.x, dropAttrs);
         
     }
     else{
@@ -111,12 +115,20 @@ void Droplet::_process(double delta) {
 
     //check if interacting with world
 
-    //update state
 
-
+    //apply changes
     this->set_velocity(vel);
 
     this->move_and_slide();
+
+    //update state
+    DropletState* new_state = this->state->get_new_state(vel, input_handler, dropAttrs);
+
+    if(new_state != nullptr){
+        //update state here hmm i think i have to delete the reference here 
+        //and not in the droplet it self
+        state = new_state;
+    }
 }
 //internal methods
 
