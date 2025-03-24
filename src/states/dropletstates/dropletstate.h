@@ -37,6 +37,7 @@ public:
 
     //state initing events
     virtual DropletState* deep_copy() = 0;
+    virtual ~DropletState()=default;
 
     //movement events
     virtual double calculate_run_veloicty(double delta, bool left, godot::Input* input_handler, AnimatedSprite2D* animatedsprite , double velocity, DropletAttrs dropletAttrs) = 0;    // "= 0" part makes this method pure virtual, and

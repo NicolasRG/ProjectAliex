@@ -25,9 +25,9 @@ public:
 
     IdleState();
 
-    IdleState* deep_copy();
+    ~IdleState() override;
 
-    ~IdleState();
+    IdleState* deep_copy();
     
     //im sure i can do this in an outside declartion with the same syntax
     double calculate_run_veloicty(double delta, bool left, godot::Input* input_handler, AnimatedSprite2D* animatedsprite , double velocity, DropletAttrs dropletAttrs);

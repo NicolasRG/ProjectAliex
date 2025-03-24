@@ -25,7 +25,7 @@ IdleState* IdleState::deep_copy(){
 
 
 IdleState::~IdleState(){
-    
+     UtilityFunctions::print("Idle state being deleted");
 };
 
 //im sure i can do this in an outside declartion with the same syntax
