@@ -80,6 +80,11 @@ Droplet::~Droplet() {
     //remove vars related drop  
     //TODO I WILL KILL YOU IF YOU DONT DELETE VARS HERE
     UtilityFunctions::print("Deleting Droplet");
+    this->dropletAttrs.reset(nullptr);
+    
+    //FIXME FIGURE, this is litterally a memory leak zZZZZZZ
+    // DropletState* state_ptr = this->state;
+    // delete state_ptr;
 }
 
 void Droplet::_process(double delta) {

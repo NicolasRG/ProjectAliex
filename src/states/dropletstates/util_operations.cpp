@@ -11,8 +11,8 @@ using namespace godot;
             /* code */
             return new IdleState();
             break;
-        // case(2):
-        //     return new RunState();
+        case(2):
+            return new RunState();
         default:
             return new IdleState();
             break;

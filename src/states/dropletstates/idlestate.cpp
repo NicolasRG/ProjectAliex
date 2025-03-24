@@ -54,12 +54,12 @@ dropletnetworkstate IdleState::get_networking_data(){
 
 // this method checks to see if the state of the droplet needs to be updated only based on its actions
 DropletState* IdleState::get_new_state(Vector2 vel,  Input* input_handler,DropletAttrs dropletAttrs){
-    //if(vel.y != 0){
+    if(vel.y != 0){
         //TODO update this for jump
         return new IdleState(this);
-    // }else if(vel.x != 0){
-    //     return new RunState(this);
-    // }
+        }else if(vel.x != 0){
+        return new RunState(this);
+    }
 
     return nullptr;
    
