@@ -1,4 +1,4 @@
-#include "runstate.h"
+//#include "runstate.h"
 #include "idlestate.h"
 using namespace godot;
 using namespace DropState;
@@ -24,7 +24,9 @@ IdleState* IdleState::deep_copy(){
 }
 
 
-IdleState::~IdleState(){};
+IdleState::~IdleState(){
+    
+};
 
 //im sure i can do this in an outside declartion with the same syntax
 double IdleState::calculate_run_veloicty(double delta, bool left, godot::Input* input_handler, AnimatedSprite2D* animatedsprite , double velocity, DropletAttrs dropletAttrs){
@@ -51,13 +53,14 @@ dropletnetworkstate IdleState::get_networking_data(){
 };
 
 // this method checks to see if the state of the droplet needs to be updated only based on its actions
-// DropletState* IdleState::get_new_state(Vector2 vel,  Input* input_handler,DropletAttrs dropletAttrs){
-//     if(vel.y != 0){
-//         //TODO update this for jump
-//         this->next_state = new IdleState();
-//     }else if(vel.x != 0){
-//         this->next_state = new RunState(this);
-//     }
+DropletState* IdleState::get_new_state(Vector2 vel,  Input* input_handler,DropletAttrs dropletAttrs){
+    //if(vel.y != 0){
+        //TODO update this for jump
+        return new IdleState(this);
+    // }else if(vel.x != 0){
+    //     return new RunState(this);
+    // }
 
-//     return this->next_state;
-// }
+    return nullptr;
+   
+}

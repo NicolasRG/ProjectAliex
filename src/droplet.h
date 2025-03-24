@@ -7,10 +7,10 @@
 #include <godot_cpp/variant/node_path.hpp>
 #include <godot_cpp/variant/utility_functions.hpp>
 #include <godot_cpp/classes/input.hpp>
-// #include "states/dropletstates/dropletstate.h"
-// #include "states/dropletstates/idlestate.h"
-// #include "states/dropletstates/runstate.h"
-//#include "states/dropletstates/util_operations.h"
+#include "states/dropletstates/dropletstate.h"
+#include "states/dropletstates/idlestate.h"
+#include "states/dropletstates/runstate.h"
+#include "states/dropletstates/util_operations.h"
 #include "dropletattrs.h"
 #include <string>
 #include <map>
@@ -35,7 +35,7 @@ class Droplet : public CharacterBody2D {
 		// 	return internal_map_state_idl( state_id);
 		// }
 
-		//std::shared_ptr<DropletState> state = std::make_shared<IdleState>();
+		DropletState* state = new IdleState();
 
 	protected:
 		static void _bind_methods();

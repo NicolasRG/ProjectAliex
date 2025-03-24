@@ -60,8 +60,6 @@ Droplet::Droplet() {
 	// Initialize any variables here.
 	dropletAttrs->time_passed = 0.0;
     UtilityFunctions::print("Creating My Object");
-    //if anything breaks it this
-    //state = new IdleState();
 
     Node* animatedsprite_or_null = get_node_or_null(animatedspritepath);
      if(animatedsprite_or_null == nullptr || animatedsprite_or_null == NULL){
@@ -79,7 +77,8 @@ Droplet::Droplet() {
 }
 
 Droplet::~Droplet() {
-	// Add your cleanup here.
+    //remove vars related drop  
+    //TODO I WILL KILL YOU IF YOU DONT DELETE VARS HERE
     UtilityFunctions::print("Deleting Droplet");
 }
 

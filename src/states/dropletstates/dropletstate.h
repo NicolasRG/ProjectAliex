@@ -32,7 +32,7 @@ namespace DropState {class DropletState //: public Object
 public:
     //TODO MAKE SURE THAT ALL OLD STATES ARE EXPLICITLY DELETED WHEN VARIABLE ARE SETUP!!!!!!
     std::string StateName =  "";
-    // std::shared_ptr<DropletState> next_state = new std::shared_ptr<>;
+    // std::unique_ptr<DropletState> next_state = nullptr;
     int state_id = -1;
 
     //state initing events
@@ -43,7 +43,7 @@ public:
     virtual double calculate_jump_velocity(double delta, bool left, Input* input_handler, AnimatedSprite2D* animatedsprite , double velocity, DropletAttrs dropletAttrs) = 0;
     virtual bool is_dead() = 0;
     virtual dropletnetworkstate get_networking_data() =0;
-    //virtual DropletState* get_new_state(Vector2 vel,  Input* input_handler,DropletAttrs dropletAttrs)=0;
+    virtual DropletState* get_new_state(Vector2 vel,  Input* input_handler,DropletAttrs dropletAttrs)=0;
 };
 }
 
