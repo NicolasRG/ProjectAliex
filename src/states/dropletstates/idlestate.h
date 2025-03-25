@@ -3,6 +3,7 @@
 
 #include "dropletstate.h"
 #include "runstate.h"
+#include "jumpstate.h"
 using namespace godot;
 using namespace DropState;
 
@@ -31,7 +32,7 @@ public:
     
     //im sure i can do this in an outside declartion with the same syntax
     double calculate_run_veloicty(double delta, bool left, godot::Input* input_handler, AnimatedSprite2D* animatedsprite , double velocity, DropletAttrs dropletAttrs) override;
-    double calculate_jump_velocity(double delta, bool left, Input* input_handler, AnimatedSprite2D* animatedsprite , double velocity, DropletAttrs dropletAttrs) override;
+    double calculate_jump_velocity(double delta, bool left, Input* input_handler, AnimatedSprite2D* animatedsprite , double velocity, DropletAttrs dropletAttrs, bool is_on_floor) override;
 
     bool is_dead()override;
     //TODO network impl

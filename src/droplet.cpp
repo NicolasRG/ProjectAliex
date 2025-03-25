@@ -96,7 +96,7 @@ void Droplet::_process(double delta) {
     DropletAttrs dropAttrs = *this->dropletAttrs;
     //todo fix arg for direction
     if(input_handler->is_action_pressed("character_jump")){
-        vel.y = this->state->calculate_jump_velocity(delta, false,input_handler, animatedsprite, vel.y, dropAttrs);
+        vel.y = this->state->calculate_jump_velocity(delta, false,input_handler, animatedsprite, vel.y, dropAttrs, is_on_floor());
     }
     
     

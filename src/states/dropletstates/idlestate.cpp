@@ -34,8 +34,7 @@ double IdleState::calculate_run_veloicty(double delta, bool left, godot::Input* 
     animatedsprite->play();
     return dropletAttrs.BASE_RUN_SPEED;
 };  
-double IdleState::calculate_jump_velocity(double delta, bool left, Input* input_handler, AnimatedSprite2D* animatedsprite , double velocity, DropletAttrs dropletAttrs){
-    
+double IdleState::calculate_jump_velocity(double delta, bool left, Input* input_handler, AnimatedSprite2D* animatedsprite , double velocity, DropletAttrs dropletAttrs, bool is_on_floor){
     double vertical_velocity = -1 * dropletAttrs.GRAVITY;
     UtilityFunctions::print("Jump hoe");
     //todo bind to the jump 
@@ -56,11 +55,10 @@ dropletnetworkstate IdleState::get_networking_data(){
 DropletState* IdleState::get_new_state(Vector2 vel,  Input* input_handler,DropletAttrs dropletAttrs){
     if(vel.y != 0){
         //TODO update this for jump
-        return new IdleState(this);
-        }else if(vel.x != 0){
+        return new JumpState(this);
+    }else if(vel.x != 0){
         return new RunState(this);
     }
-
     return nullptr;
    
 }

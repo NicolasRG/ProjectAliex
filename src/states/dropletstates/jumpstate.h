@@ -1,8 +1,9 @@
-#ifndef DROPLSET_RUN_STATE_P_H
-#define DROPLSET_RUN_STATE_P_H
+#ifndef DROPLSET_JUMP_STATE_P_H
+#define DROPLSET_JUMP_STATE_P_H
 
 #include "dropletstate.h"
 #include "idlestate.h"
+#include "runstate.h"
 
 using namespace godot;
 using namespace DropState;
@@ -14,26 +15,26 @@ using namespace DropState;
 //jumping
 //slowed or is that part of the others??
 
-class RunState: public virtual DropletState
+class JumpState: public virtual DropletState
 {
 public:
-    const std::string stateName = "DROPLET_RUN_STATE";
+    const std::string stateName = "DROPLET_JUMP_STATE";
 
-    const int state_id = 2;
+    const int state_id = 3;
 
     //TODO MAKE SURE THAT ALL OLD STATES ARE EXPLICITLY DELETED WHEN VARIABLE ARE SETUP!!!!!!
-    RunState(DropletState* oldstate){
-        UtilityFunctions::print("Going into run state");
+    JumpState(DropletState* oldstate){
+        UtilityFunctions::print("Going into jump state");
     };
 
     // shoule never be used outside of mapping function
-    RunState(){
-        UtilityFunctions::print("Going into run state");
+    JumpState(){
+        UtilityFunctions::print("Going into jump state");
     };
 
-    ~RunState() override;
+    ~JumpState() override;
 
-    RunState* deep_copy() override;
+    JumpState* deep_copy() override;
     
 
     double calculate_run_veloicty(double delta, bool left, godot::Input* input_handler, AnimatedSprite2D* animatedsprite , double velocity,DropletAttrs dropletAttrs) override;  
