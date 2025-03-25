@@ -31,15 +31,15 @@ public:
         UtilityFunctions::print("Going into run state");
     };
 
-    ~RunState();
+    ~RunState() override;
 
-    RunState* deep_copy();
+    RunState* deep_copy() override;
     
 
-    double calculate_run_veloicty(double delta, bool left, godot::Input* input_handler, AnimatedSprite2D* animatedsprite , double velocity,DropletAttrs dropletAttrs) ;  
-    double calculate_jump_velocity(double delta, bool left, Input* input_handler, AnimatedSprite2D* animatedsprite , double velocity, DropletAttrs dropletAttrs) ;
-    bool is_dead() ;
-    dropletnetworkstate get_networking_data() ;
-    DropletState* get_new_state(Vector2 vel,  Input* input_handler,DropletAttrs dropletAttrs) ;
+    double calculate_run_veloicty(double delta, bool left, godot::Input* input_handler, AnimatedSprite2D* animatedsprite , double velocity,DropletAttrs dropletAttrs) override;  
+    double calculate_jump_velocity(double delta, bool left, Input* input_handler, AnimatedSprite2D* animatedsprite , double velocity, DropletAttrs dropletAttrs) override;
+    bool is_dead() override;
+    dropletnetworkstate get_networking_data() override;
+    DropletState* get_new_state(Vector2 vel,  Input* input_handler,DropletAttrs dropletAttrs) override;
 };
 #endif

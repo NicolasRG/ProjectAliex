@@ -43,10 +43,10 @@ void Droplet::_bind_methods() {
     //so turns out if godot editor doesnt have the hints and types it gets real mad and crashes, game runs fine tho
     ADD_PROPERTY(PropertyInfo(Variant::FLOAT, "LOG_DRAG"), "set_log_drag", "get_log_drag");
 
-    // ClassDB::bind_method(D_METHOD("get_state"), &Droplet::get_state);
-	// ClassDB::bind_method(D_METHOD("set_state", "state_name"), &Droplet::set_state); 
-    // //so turns out if godot editor doesnt have the hints and types it gets real mad and crashes, game runs fine tho
-    // ADD_PROPERTY(PropertyInfo(Variant::INT, "State_Name"), "set_state", "get_state");
+    ClassDB::bind_method(D_METHOD("get_state"), &Droplet::get_state);
+	ClassDB::bind_method(D_METHOD("set_state", "state_name"), &Droplet::set_state); 
+    //so turns out if godot editor doesnt have the hints and types it gets real mad and crashes, game runs fine tho
+    ADD_PROPERTY(PropertyInfo(Variant::INT, "State_Name"), "set_state", "get_state");
 
     ClassDB::bind_method(D_METHOD("get_animatedspritepath"), &Droplet::get_animatedspritepath);
 	ClassDB::bind_method(D_METHOD("set_animatedspritepath", "_animatedSprite"), &Droplet::set_animatedspritepath);
@@ -78,13 +78,9 @@ Droplet::Droplet() {
 
 Droplet::~Droplet() {
     //remove vars related drop  
-    //TODO I WILL KILL YOU IF YOU DONT DELETE VARS HERE
     UtilityFunctions::print("Deleting Droplet");
     this->dropletAttrs.reset(nullptr);
-
-    //FIXME FIGURE, this is litterally a memory leak zZZZZZZ
-    // DropletState* state_ptr = this->state;
-    // delete state_ptr;
+    delete state;
 }
 
 void Droplet::_process(double delta) {
@@ -105,10 +101,10 @@ void Droplet::_process(double delta) {
     
     
     if (input_handler->is_action_pressed("character_left")){
-        vel.x = calculate_run_veloicty(delta, true,input_handler, animatedsprite, vel.x);
+        //vel.x = calculate_run_veloicty(delta, true,input_handler, animatedsprite, vel.x);
         vel.x = this->state->calculate_run_veloicty(delta, true,input_handler, animatedsprite, vel.x, dropAttrs);
     }else if (input_handler->is_action_pressed("character_right")){
-        vel.x = calculate_run_veloicty(delta, false,input_handler, animatedsprite, vel.x);
+        //vel.x = calculate_run_veloicty(delta, false,input_handler, animatedsprite, vel.x);
         vel.x = this->state->calculate_run_veloicty(delta, false,input_handler, animatedsprite, vel.x, dropAttrs);
         
     }
@@ -130,62 +126,12 @@ void Droplet::_process(double delta) {
     DropletState* new_state = this->state->get_new_state(vel, input_handler, dropAttrs);
 
     if(new_state != nullptr){
-        //update state here hmm i think i have to delete the reference here 
-        //and not in the droplet it self
         delete state;
         state = new_state;
-        // DropletState* test = new IdleState();
-        // delete test;
     }
 }
 //internal methods
 
-double Droplet::calculate_run_veloicty(double delta, bool left, godot::Input* input_handler, AnimatedSprite2D* animatedsprite , double velocity){
-    UtilityFunctions::print(velocity);
-    const double DELTA_DILUTANT = .1;
-
-    double direction;
-
-    if(left){
-        direction  = -1;
-        animatedsprite->set_flip_h(false);
-        UtilityFunctions::print("move left");
-        animatedsprite->play();
-    }else{
-        direction = 1;
-        UtilityFunctions::print("move right");
-        //move this to state
-        animatedsprite->set_flip_h(true);
-        animatedsprite->play();
-    }
-
-    double calcualted_accelartion = (delta * DELTA_DILUTANT * dropletAttrs->RUN_ACCELERATION);
-    double calculated_velocity = (dropletAttrs->BASE_RUN_SPEED  + calcualted_accelartion )* direction + velocity;
-    //this should be some abs
-    if(calculated_velocity > 0){
-        calculated_velocity = fmin(calculated_velocity, dropletAttrs->MAX_RUN_SPEED);
-    }else if(calculated_velocity < 0){
-        calculated_velocity = fmax(calculated_velocity, (-1*dropletAttrs->MAX_RUN_SPEED));
-    }
-        //if the velocity is zerio we dont care
-
-    std::string message = std::to_string(calculated_velocity);
-    UtilityFunctions::print(message.data()); 
-    return calculated_velocity;
-
-}
-
-double Droplet::calculate_jump_velocity(double delta, bool isLeft, godot::Input* input_handler, AnimatedSprite2D* animatedsprite , double velocity){
-    double vertical_velocity = velocity;
-    if(input_handler->is_action_just_pressed("character_jump") && is_on_floor()){
-        vertical_velocity = -1 * dropletAttrs->GRAVITY;
-        UtilityFunctions::print("Jump hoe");
-        animatedsprite->play();
-    }else if(!is_on_floor()){
-        vertical_velocity += dropletAttrs->GRAVITY * delta + dropletAttrs->LOG_DRAG;
-    }
-    return vertical_velocity;
-}
 
 //getter and setters
 void Droplet::_ready() {
@@ -248,16 +194,18 @@ double Droplet::get_log_drag(){
     return (dropletAttrs->LOG_DRAG);
 };
 
-// void Droplet::set_state(int state_id){    
-//     //figure out how to handle this
-//     this->state.reset(map_state_name(state_id));
+void Droplet::set_state(int state_id){    
+    //figure out how to handle this
+    DropletState* new_state = map_state_name(state_id);
+    delete this->state;
+    state = new_state;
 
-// }
+}
 
-// int Droplet::get_state(){
-//     //need to assign it to another var before referncing it as const funciton gets ma
-//     return this->state->state_id;
-// };
+int Droplet::get_state(){
+    //need to assign it to another var before referncing it as const funciton gets ma
+    return this->state->state_id;
+};
 
 void Droplet::set_animatedspritepath(NodePath p_animatedSprite){
     UtilityFunctions::print("SET ANIMATED SPRITE");

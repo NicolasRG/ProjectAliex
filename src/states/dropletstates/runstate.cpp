@@ -15,11 +15,11 @@ RunState* RunState::deep_copy(){
 }
 
 RunState::~RunState(){
-
+    UtilityFunctions::print("Run state being deleted");
 };
 
 double RunState::calculate_run_veloicty(double delta, bool left, godot::Input* input_handler, AnimatedSprite2D* animatedsprite , double velocity, DropletAttrs dropletAttrs){
-    UtilityFunctions::print(velocity);
+    //UtilityFunctions::print(velocity);
     const double DELTA_DILUTANT = .1;
 
     double direction;
@@ -27,11 +27,11 @@ double RunState::calculate_run_veloicty(double delta, bool left, godot::Input* i
     if(left){
         direction  = -1;
         animatedsprite->set_flip_h(false);
-        UtilityFunctions::print("move left");
+        //UtilityFunctions::print("move left");
         animatedsprite->play();
     }else{
         direction = 1;
-        UtilityFunctions::print("move right");
+        //UtilityFunctions::print("move right");
         //move this to state
         animatedsprite->set_flip_h(true);
         animatedsprite->play();
@@ -47,8 +47,8 @@ double RunState::calculate_run_veloicty(double delta, bool left, godot::Input* i
     }
         //if the velocity is zero we dont care
 
-    std::string message = std::to_string(calculated_velocity);
-    UtilityFunctions::print(message.data()); 
+    // std::string message = std::to_string(calculated_velocity);
+    // UtilityFunctions::print(message.data()); 
     return calculated_velocity;
 }
 

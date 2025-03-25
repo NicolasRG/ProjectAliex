@@ -27,17 +27,17 @@ public:
 
     ~IdleState() override;
 
-    IdleState* deep_copy();
+    IdleState* deep_copy() override;
     
     //im sure i can do this in an outside declartion with the same syntax
-    double calculate_run_veloicty(double delta, bool left, godot::Input* input_handler, AnimatedSprite2D* animatedsprite , double velocity, DropletAttrs dropletAttrs);
-    double calculate_jump_velocity(double delta, bool left, Input* input_handler, AnimatedSprite2D* animatedsprite , double velocity, DropletAttrs dropletAttrs);
+    double calculate_run_veloicty(double delta, bool left, godot::Input* input_handler, AnimatedSprite2D* animatedsprite , double velocity, DropletAttrs dropletAttrs) override;
+    double calculate_jump_velocity(double delta, bool left, Input* input_handler, AnimatedSprite2D* animatedsprite , double velocity, DropletAttrs dropletAttrs) override;
 
-    bool is_dead() ;
+    bool is_dead()override;
     //TODO network impl
-    dropletnetworkstate get_networking_data() ;
+    dropletnetworkstate get_networking_data()override;
 
     // this method checks to see if the state of the droplet needs to be updated only based on its actions
-    DropletState* get_new_state(Vector2 vel,  Input* input_handler,DropletAttrs dropletAttrs) ;
+    DropletState* get_new_state(Vector2 vel,  Input* input_handler,DropletAttrs dropletAttrs) override;
 };
 #endif

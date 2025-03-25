@@ -31,9 +31,9 @@ class Droplet : public CharacterBody2D {
 		double calculate_run_veloicty(double delta, bool left, godot::Input* input_handler, AnimatedSprite2D* animatedsprite , double velocity);
 		double calculate_jump_velocity(double delta, bool left, godot::Input* input_handler, AnimatedSprite2D* animatedsprite , double velocity);
 
-		// DropletState* map_state_name(int state_id){
-		// 	return internal_map_state_idl( state_id);
-		// }
+		DropletState* map_state_name(int state_id){
+			return internal_map_state_idl( state_id);
+		}
 
 		DropletState* state = new IdleState();
 
@@ -68,8 +68,8 @@ class Droplet : public CharacterBody2D {
 		void set_log_drag(double p_log_drag);
 		double get_log_drag();
 
-		// void set_state(int new_state_name);
-		// int get_state();
+		void set_state(int new_state_name);
+		int get_state();
 	};
 }
 
