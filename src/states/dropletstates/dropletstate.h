@@ -38,10 +38,14 @@ public:
     //state initing events
     virtual DropletState* deep_copy() = 0;
     virtual ~DropletState()=default;
+    bool is_on_the_floor = true;
 
     //movement events
     virtual double calculate_run_veloicty(double delta, bool left, godot::Input* input_handler, AnimatedSprite2D* animatedsprite , double velocity, DropletAttrs dropletAttrs) = 0;    // "= 0" part makes this method pure virtual, and
     virtual double calculate_jump_velocity(double delta, bool left, Input* input_handler, AnimatedSprite2D* animatedsprite , double velocity, DropletAttrs dropletAttrs,bool is_on_floor) = 0;
+    
+    virtual Vector2 process_movement(double delta, bool left, Input* input_handler, AnimatedSprite2D* animatedsprite , Vector2 velocity, DropletAttrs dropletAttrs,bool is_on_floor) = 0;
+    
     virtual bool is_dead() = 0;
     virtual dropletnetworkstate get_networking_data() =0;
     virtual DropletState* get_new_state(Vector2 vel,  Input* input_handler,DropletAttrs dropletAttrs)=0;

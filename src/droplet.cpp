@@ -94,7 +94,7 @@ void Droplet::_process(double delta) {
     
     AnimatedSprite2D* animatedsprite = (AnimatedSprite2D*)animatedsprite_or_null;
     DropletAttrs dropAttrs = *this->dropletAttrs;
-    //todo fix arg for direction
+    //todo
     if(input_handler->is_action_pressed("character_jump")){
         vel.y = this->state->calculate_jump_velocity(delta, false,input_handler, animatedsprite, vel.y, dropAttrs, is_on_floor());
     }
@@ -113,9 +113,10 @@ void Droplet::_process(double delta) {
         animatedsprite->stop();
         vel.x = 0;
     }
-
     //check if interacting with world
 
+    //process stuff
+    vel = this->state->process_movement(delta, false,input_handler, animatedsprite, vel, dropAttrs, is_on_floor());
 
     //apply changes
     this->set_velocity(vel);

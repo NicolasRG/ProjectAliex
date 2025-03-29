@@ -53,10 +53,15 @@ double RunState::calculate_run_veloicty(double delta, bool left, godot::Input* i
 }
 
 double RunState::calculate_jump_velocity(double delta, bool left, Input* input_handler, AnimatedSprite2D* animatedsprite , double velocity, DropletAttrs dropletAttrs, bool is_on_floor){  
-    double vertical_velocity = -1 * dropletAttrs.GRAVITY;
+    double vertical_velocity = -1 * dropletAttrs.LOG_DRAG;
     UtilityFunctions::print("Jump hoe");
     //todo bind to the jump 
     return vertical_velocity;
+}
+
+Vector2 RunState::process_movement(double delta, bool left, Input* input_handler, AnimatedSprite2D* animatedsprite , Vector2 velocity, DropletAttrs dropletAttrs, bool is_on_floor){  
+    //Just a pass through for run state
+    return velocity;
 }
 
 bool RunState::is_dead(){

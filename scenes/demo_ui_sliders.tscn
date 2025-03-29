@@ -108,6 +108,8 @@ text = "LOG DRAG"
 [node name="slider" type="HSlider" parent="LogDragContainer"]
 custom_minimum_size = Vector2(500, 50)
 layout_mode = 2
+max_value = 1000.0
+step = 0.01
 
 [node name="currentval" type="RichTextLabel" parent="LogDragContainer"]
 custom_minimum_size = Vector2(125, 2.08165e-12)

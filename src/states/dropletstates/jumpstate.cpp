@@ -1,4 +1,5 @@
 #include "jumpstate.h"
+#include "cmath"
 
 using namespace godot;
 using namespace DropState;
@@ -54,18 +55,37 @@ double JumpState::calculate_run_veloicty(double delta, bool left, godot::Input* 
 double JumpState::calculate_jump_velocity(double delta, bool left, Input* input_handler, 
     AnimatedSprite2D* animatedsprite , double velocity, DropletAttrs dropletAttrs, bool is_on_floor){
     
-    double vertical_velocity = velocity;
-    if(input_handler->is_action_just_pressed("character_jump") && is_on_floor){
-        vertical_velocity = -1 * dropletAttrs.GRAVITY;
-        UtilityFunctions::print("Jump hoe");
-        animatedsprite->play();
-    }else if(!is_on_floor){
-        //FIXME log drag is fucking with this it should always pull down x
-        vertical_velocity += dropletAttrs.GRAVITY * delta + dropletAttrs.LOG_DRAG;
-        UtilityFunctions::print(vertical_velocity);
-    }
-    return vertical_velocity;
+    // double vertical_velocity = velocity;
+    // if(input_handler->is_action_just_pressed("character_jump") && is_on_floor){
+    //     vertical_velocity = -1 * dropletAttrs.GRAVITY;
+    //     UtilityFunctions::print("Jump hoe");
+    //     animatedsprite->play();
+    // }else if(!is_on_floor){
+    //     vertical_velocity += dropletAttrs.GRAVITY * delta + dropletAttrs.LOG_DRAG;
+    // }
+    return velocity;
 };
+
+Vector2 JumpState::process_movement(double delta, bool left, Input* input_handler, AnimatedSprite2D* animatedsprite , Vector2 velocity, DropletAttrs dropletAttrs, bool is_on_floor){  
+    this->is_on_the_floor = is_on_floor;
+    // set vertial velocity to zero if is on floor
+    // if(is_on_floor && !input_handler->is_action_just_pressed("character_jump")){
+    //     UtilityFunctions::print("This should not be getting triggered");
+    //     // velocity.y = 0;
+    // }else{
+        //-ax^2 + bx + c
+        //Gravity + force of jump + max jump height
+        //instial value (bx+c) needs to be set at initial jump
+        //velocity.y = (-1 * dropletAttrs.GRAVITY * delta) + dropletAttrs.LOG_DRAG;
+        // double height = dropletAttrs.LOG_DRAG;
+        UtilityFunctions::print(delta);
+        velocity.y +=  delta * dropletAttrs.GRAVITY;
+        UtilityFunctions::print(velocity.y );
+        ///////why is this instant man???????
+    //}
+
+    return velocity;
+}
 
 bool JumpState::is_dead(){
     //changes state to death and updates other stuff i guess
@@ -79,8 +99,7 @@ dropletnetworkstate JumpState::get_networking_data(){
 
 // this method checks to see if the state of the droplet needs to be updated only based on its actions
 DropletState* JumpState::get_new_state(Vector2 vel,  Input* input_handler,DropletAttrs dropletAttrs){
-    if(vel.y != 0){
-        //TODO update this for jump
+    if(!is_on_the_floor){
         return nullptr;
     }else if(vel.x != 0){
         return new RunState(this);
